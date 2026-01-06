@@ -1,9 +1,11 @@
 import { Link, useLocation } from 'react-router-dom';
 import Icon from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function Navigation() {
   const location = useLocation();
+  const { user, logout } = useAuth();
   
   const isActive = (path: string) => location.pathname === path;
   
@@ -32,38 +34,75 @@ export default function Navigation() {
               </Link>
             </Button>
             
-            <Button
-              variant={isActive('/chat') ? 'default' : 'ghost'}
-              asChild
-              className="transition-all"
-            >
-              <Link to="/chat">
-                <Icon name="MessageSquare" size={18} className="mr-2" />
-                Чат
-              </Link>
-            </Button>
-            
-            <Button
-              variant={isActive('/subscriptions') ? 'default' : 'ghost'}
-              asChild
-              className="transition-all"
-            >
-              <Link to="/subscriptions">
-                <Icon name="CreditCard" size={18} className="mr-2" />
-                Подписки
-              </Link>
-            </Button>
-            
-            <Button
-              variant={isActive('/profile') ? 'default' : 'ghost'}
-              asChild
-              className="transition-all"
-            >
-              <Link to="/profile">
-                <Icon name="User" size={18} className="mr-2" />
-                Профиль
-              </Link>
-            </Button>
+            {user ? (
+              <>
+                <Button
+                  variant={isActive('/chat') ? 'default' : 'ghost'}
+                  asChild
+                  className="transition-all"
+                >
+                  <Link to="/chat">
+                    <Icon name="MessageSquare" size={18} className="mr-2" />
+                    Чат
+                  </Link>
+                </Button>
+                
+                <Button
+                  variant={isActive('/subscriptions') ? 'default' : 'ghost'}
+                  asChild
+                  className="transition-all"
+                >
+                  <Link to="/subscriptions">
+                    <Icon name="CreditCard" size={18} className="mr-2" />
+                    Подписки
+                  </Link>
+                </Button>
+                
+                <Button
+                  variant={isActive('/profile') ? 'default' : 'ghost'}
+                  asChild
+                  className="transition-all"
+                >
+                  <Link to="/profile">
+                    <Icon name="User" size={18} className="mr-2" />
+                    Профиль
+                  </Link>
+                </Button>
+                
+                <Button
+                  variant="ghost"
+                  onClick={logout}
+                  className="transition-all"
+                >
+                  <Icon name="LogOut" size={18} className="mr-2" />
+                  Выход
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  variant={isActive('/login') ? 'default' : 'ghost'}
+                  asChild
+                  className="transition-all"
+                >
+                  <Link to="/login">
+                    <Icon name="LogIn" size={18} className="mr-2" />
+                    Вход
+                  </Link>
+                </Button>
+                
+                <Button
+                  variant="default"
+                  asChild
+                  className="bg-gradient-to-r from-primary to-secondary"
+                >
+                  <Link to="/register">
+                    <Icon name="UserPlus" size={18} className="mr-2" />
+                    Регистрация
+                  </Link>
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </div>
